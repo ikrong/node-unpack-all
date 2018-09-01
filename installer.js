@@ -4,8 +4,8 @@
 var fs = require('fs'); 
 var path = require('path');
 
-const unarAppfile = (process.platform == "darwin") ? 'unar1.8.1.zip' : 'unar1.8.1_win.zip' ;  
-const unarAppurl = 'https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/theunarchiver/';
+const unarAppfile = (process.platform == "darwin") ? 'unar1.8.1.xzip' : 'unar1.8.1_win.xzip' ;  
+const unarAppurl = './';
 
 const cwd = process.cwd();
 const url = unarAppurl + unarAppfile;
@@ -36,13 +36,10 @@ function getExtractUnar(urlsource, filesource, destination){
     var unzip = require('unzipper');
     console.log('Downloading ' + urlsource);
   return new Promise(function (resolve, reject) {         
-    node_wget({ url: urlsource, dest: filesource }, function (err) {
-        if (err) { return reject('Error downloading file: ' + err); }
-        var unzipfile = unzip.Extract({ path: destination });
-        unzipfile.on('error', function(err) { reject(err); });
-        unzipfile.on('close', function() { resolve(); });
-        fs.createReadStream(filesource).pipe(unzipfile);     
-    });        
+    var unzipfile = unzip.Extract({ path: destination });
+    unzipfile.on('error', function(err) { reject(err); });
+    unzipfile.on('close', function() { resolve(); });
+    fs.createReadStream(filesource).pipe(unzipfile);     
   });
 } 
 
